@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -7,12 +7,22 @@ export class MoviesService {
   constructor(private prisma: PrismaService){
   }
 
-  create(createMovieDto: CreateMovieDto) {
+  async create(createMovieDto: CreateMovieDto) {
+    const { tmdbId } = createMovieDto
+    const existingMovie = await this.prisma.movies.findUnique({
+      where: {
+        tmdbId
+      }
+    })
+
+    if(existingMovie){
+      throw new HttpException('this movie exist in the database', HttpStatus.BAD_REQUEST)
+    }
     return this.prisma.movies.create({ data: createMovieDto})
   }
 
-  findAll(tmdbId: number) {
-    return this.prisma.movies.findMany({
+  async findAll(tmdbId: number) {
+    const response = await this.prisma.movies.findMany({
       where: {
         tmdbId,
       },
@@ -20,5 +30,11 @@ export class MoviesService {
         Reviews: true
       }
     })
+
+    if(response.length === 0){
+      throw new HttpException('this movie has not reviews', HttpStatus.BAD_REQUEST)
+    }
+
+    return response
   }
 }
