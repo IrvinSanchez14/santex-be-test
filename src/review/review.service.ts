@@ -7,7 +7,32 @@ export class ReviewService {
   constructor(private prisma: PrismaService){
   }
 
-  create(createReviewDto: CreateReviewDto) {
+  async create(createReviewDto: CreateReviewDto) {
+    const { movie } = createReviewDto
+    const isMovie = await this.prisma.movies.findUnique({
+      where: {
+        tmdbId: movie
+      }
+    })
+
+    if(!isMovie){
+      const request = await fetch(`${process.env.API_URL}/${createReviewDto.movie}`, {
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${process.env.ACCESS_TOKEN}`
+        }
+      }).then((res) => res.json())
+      await this.prisma.movies.create({
+        data: {
+          title: request.title,
+          tmdbId: createReviewDto.movie,
+          release_date: request.release_date,
+          poster_path: request.poster_path,
+          overview: request.overview,
+        }
+      })
+    }
     return this.prisma.reviews.create({ data: {
       raiting: createReviewDto.raiting,
       movie: {
@@ -17,10 +42,10 @@ export class ReviewService {
       },
       author: {
         connect: {
-          id: 4,
           name: createReviewDto.author
         }
       }
     } })
   }
 }
+
