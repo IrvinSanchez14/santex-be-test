@@ -24,13 +24,34 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+App build with nestJS, prisma and postgres.
+App where the user can add a review of their favorite movie
+
 
 ## Installation
 
 ```bash
+# clone repo
+$ git clone git@github.com:IrvinSanchez14/south-test.git
+$ cd south-test
+
+# install postgress and database with docker
+$ docker-compose up
+
+# install libraries
 $ npm install
 ```
+
+## .env
+
+```bash
+
+$ DATABASE_URL="postgresql://citizix_user:S3cret@localhost:5432/mydb?schema=citizix_db"
+$ API_URL="https://api.themoviedb.org/3/movie"
+$ ACCESS_TOKEN="eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwY2JhYWY4MzBjZjlmZTZlZmNhYjNkNzNiNjJlMWVkMSIsInN1YiI6IjY1NDQ0MzczMjg2NmZhMDBhYjBmZGFhMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.bPt1SuyEUMSYL1fb2-_ysb0UVNsXwrY7CptdtLLJdPE"
+
+```
+
 
 ## Running the app
 
@@ -45,29 +66,6 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+## flow app
 
-```bash
-# unit tests
-$ npm run test
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
