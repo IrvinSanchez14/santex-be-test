@@ -1,0 +1,83 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @upper on FIELD_DEFINITION
+
+type LeagueResponseDTO {
+  name: String!
+}
+
+type CoachesResponseDTO {
+  name: String!
+  dateOfBirth: String!
+  nationality: String!
+}
+
+type PlayerTeamResponseDTO {
+  teamName: String!
+  players: [PlayersResponseDTO!]!
+}
+
+type PlayersResponseDTO {
+  name: String!
+  position: String!
+  dateOfBirth: String!
+  nationality: String!
+}
+
+type TeamOnlyResponseDTO {
+  name: String!
+  tla: String!
+  shortName: String!
+  areaName: String!
+  address: String!
+  players: [PlayersResponseDTO!]!
+}
+
+type TeamsResponseDTO {
+  name: String!
+  tla: String!
+  shortName: String!
+  areaName: String!
+  address: String!
+  players: [PlayersResponseDTO!]!
+  coachs: [CoachesResponseDTO!]!
+}
+
+type CompetitionResponseDTO {
+  name: String!
+  code: String!
+  areaName: String!
+  teams: [TeamsResponseDTO!]!
+}
+
+type Query {
+  sayHello: String!
+  getCompetition(body: CompetitionRequestDTO!): CompetitionResponseDTO!
+  getPlayers(body: PlayersRequestDTO!): [PlayerTeamResponseDTO!]!
+  getTeams(body: TeamRequestDTO!): [TeamOnlyResponseDTO!]!
+}
+
+input CompetitionRequestDTO {
+  competitionName: String!
+}
+
+input PlayersRequestDTO {
+  leagueCode: String!
+  teamName: String
+}
+
+input TeamRequestDTO {
+  leagueCode: String!
+  teamName: String
+  showPlayers: Boolean
+}
+
+type Mutation {
+  getLeague(body: LeagueRequestDTO!): LeagueResponseDTO!
+}
+
+input LeagueRequestDTO {
+  leagueCode: String!
+}

@@ -12,29 +12,52 @@ datasource db {
 
 // prisma/schema.prisma
 
-model Movies {
+model Competition {
   id           Int       @id @default(autoincrement())
-  tmdbId       Int       @unique
-  title        String
-  release_date String
-  poster_path  String
-  overview     String
+  name         String    @unique
+  code         String    @unique
+  areaName     String
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
-  Reviews      Reviews[]
+  teams        Team[]
 }
 
-model User {
-  id      Int       @id @default(autoincrement())
-  name    String    @unique
-  Reviews Reviews[]
+model Team {
+  id            Int       @id @default(autoincrement())
+  name          String    @unique
+  tla           String
+  shortName     String
+  areaName      String
+  address       String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt     
+  competition   Competition @relation(fields: [competitionId], references: [id])
+  competitionId Int
+  players       Player[]
+  coachs        Coach[]  
 }
 
-model Reviews {
-  id       Int    @id @default(autoincrement())
-  raiting  Int
-  movie    Movies @relation(fields: [movieId], references: [tmdbId])
-  movieId  Int    
-  author   User   @relation(fields: [authorId], references: [name])
-  authorId String    
+model Player {
+  id             Int    @id @default(autoincrement())
+  name           String
+  position       String
+  dateOfBirth    String
+  nationality    String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  teamCurrent    Team @relation(fields: [teamCurrentId], references: [id])
+  teamCurrentId  Int     
 }
+
+model Coach {
+  id             Int    @id @default(autoincrement())
+  name           String
+  dateOfBirth    String
+  nationality    String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  teamCurrent    Team @relation(fields: [teamCurrentId], references: [id])
+  teamCurrentId  Int    
+}
+
+
